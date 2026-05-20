@@ -28,10 +28,10 @@ export const config = {
 
     // Vertical baseline of the FIRST line of the name block
     // (in PDF points from the bottom of the page).
-    firstLineBaselineY: 470,
+    firstLineBaselineY: 322,
 
     // Font size in points.
-    fontSize: 34,
+    fontSize: 32,
 
     // Spacing between lines as a multiple of the font size.
     lineHeight: 1.15,

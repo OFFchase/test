@@ -87,7 +87,7 @@ export default function ParticipantTable({
                   <input
                     type="text"
                     value={p.fio}
-                    placeholder="Виситов Израил Алмирзаевич"
+                    placeholder="ФИО"
                     onChange={(e) => updateRow(p.id, { fio: e.target.value })}
                     onKeyDown={handleKeyDown}
                     autoFocus={idx === participants.length - 1 && !p.fio}

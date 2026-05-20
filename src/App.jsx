@@ -29,6 +29,8 @@ function loadInitial() {
 export default function App() {
   const [participants, setParticipants] = useState(loadInitial);
   const [mode, setMode] = useState('full'); // 'full' | 'nameOnly'
+  const [color, setColor] = useState(config.text.defaultColorByMode.full); // 'white' | 'black'
+  const [caseStyle, setCaseStyle] = useState(config.text.defaultCase); // 'upper' | 'capitalize'
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
 
@@ -41,6 +43,12 @@ export default function App() {
     }
   }
 
+  function changeMode(nextMode) {
+    setMode(nextMode);
+    // Reset color to the mode-appropriate default. User can still override after.
+    setColor(config.text.defaultColorByMode[nextMode]);
+  }
+
   async function handlePrintRow(p) {
     setError('');
     setBusy(true);
@@ -49,6 +57,8 @@ export default function App() {
         fio: p.fio,
         breakAfterWord: p.breakAfterWord,
         mode,
+        color,
+        caseStyle,
       });
       printPdfBlob(blob);
     } catch (e) {
@@ -70,6 +80,8 @@ export default function App() {
       const blob = await generateBatchCertificate({
         participants: valid,
         mode,
+        color,
+        caseStyle,
       });
       printPdfBlob(blob);
     } catch (e) {
@@ -100,7 +112,7 @@ export default function App() {
       </header>
 
       <section className="controls">
-        <fieldset className="mode-toggle">
+        <fieldset className="opt-group mode-toggle">
           <legend>Режим печати</legend>
           <label>
             <input
@@ -108,7 +120,7 @@ export default function App() {
               name="mode"
               value="full"
               checked={mode === 'full'}
-              onChange={() => setMode('full')}
+              onChange={() => changeMode('full')}
             />
             <span>
               <strong>Полный шаблон</strong>
@@ -121,13 +133,55 @@ export default function App() {
               name="mode"
               value="nameOnly"
               checked={mode === 'nameOnly'}
-              onChange={() => setMode('nameOnly')}
+              onChange={() => changeMode('nameOnly')}
             />
             <span>
               <strong>Только ФИО</strong>
-              <em>Для готовых распечатанных шаблонов</em>
+              <em>Только имя, без шаблона (для готовых распечаток)</em>
             </span>
           </label>
+        </fieldset>
+
+        <fieldset className="opt-group">
+          <legend>Цвет текста</legend>
+          <div className="seg">
+            <button
+              type="button"
+              className={`seg-btn ${color === 'white' ? 'active' : ''}`}
+              onClick={() => setColor('white')}
+            >
+              <span className="swatch swatch-white" /> Белый
+            </button>
+            <button
+              type="button"
+              className={`seg-btn ${color === 'black' ? 'active' : ''}`}
+              onClick={() => setColor('black')}
+            >
+              <span className="swatch swatch-black" /> Чёрный
+            </button>
+          </div>
+        </fieldset>
+
+        <fieldset className="opt-group">
+          <legend>Регистр</legend>
+          <div className="seg">
+            <button
+              type="button"
+              className={`seg-btn ${caseStyle === 'upper' ? 'active' : ''}`}
+              onClick={() => setCaseStyle('upper')}
+              title="ВИСИТОВ ИЗРАИЛ"
+            >
+              ВСЕ ЗАГЛАВНЫЕ
+            </button>
+            <button
+              type="button"
+              className={`seg-btn ${caseStyle === 'capitalize' ? 'active' : ''}`}
+              onClick={() => setCaseStyle('capitalize')}
+              title="Виситов Израил"
+            >
+              С Заглавной
+            </button>
+          </div>
         </fieldset>
 
         <div className="bulk-actions">
@@ -148,6 +202,7 @@ export default function App() {
 
       <ParticipantTable
         participants={participants}
+        caseStyle={caseStyle}
         onChange={persist}
         onPrintRow={handlePrintRow}
       />

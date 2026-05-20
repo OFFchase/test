@@ -53,8 +53,7 @@ body,
   margin-bottom: 20px;
 }
 
-.mode-toggle {
-  flex: 1 1 320px;
+.opt-group {
   border: 1px solid var(--border);
   border-radius: 10px;
   background: var(--panel);
@@ -65,7 +64,11 @@ body,
   gap: 6px;
 }
 
-.mode-toggle legend {
+.mode-toggle {
+  flex: 2 1 320px;
+}
+
+.opt-group legend {
   font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
@@ -107,6 +110,68 @@ body,
   display: flex;
   align-items: flex-end;
   gap: 8px;
+}
+
+/* ---- Segmented controls (color / case) ---- */
+.seg {
+  display: inline-flex;
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  overflow: hidden;
+  background: #fff;
+  align-self: flex-start;
+}
+
+.seg-btn {
+  appearance: none;
+  background: #fff;
+  border: none;
+  border-right: 1px solid var(--border);
+  padding: 7px 12px;
+  font-size: 13px;
+  font-family: inherit;
+  color: var(--text);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition:
+    background 120ms,
+    color 120ms;
+}
+
+.seg-btn:last-child {
+  border-right: none;
+}
+
+.seg-btn:hover:not(.active) {
+  background: var(--row-hover);
+}
+
+.seg-btn.active {
+  background: var(--accent);
+  color: #fff;
+}
+
+.swatch {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid var(--border-strong);
+}
+
+.swatch-white {
+  background: #fff;
+}
+
+.swatch-black {
+  background: #111;
+  border-color: #111;
+}
+
+.seg-btn.active .swatch {
+  border-color: #fff;
 }
 
 /* ---- Buttons ---- */

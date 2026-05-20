@@ -28,7 +28,6 @@ export const config = {
 
     // Vertical baseline of the FIRST line of the name block
     // (in PDF points from the bottom of the page).
-    // The certificate in the sample puts the surname roughly here.
     firstLineBaselineY: 470,
 
     // Font size in points.
@@ -37,22 +36,34 @@ export const config = {
     // Spacing between lines as a multiple of the font size.
     lineHeight: 1.15,
 
-    // RGB color of the text, each 0..1.
-    // Default = dark navy-blue similar to the sample certificate.
-    color: { r: 0.07, g: 0.18, b: 0.43 },
-
     // 'center' | 'left' | 'right'
     align: 'center',
 
-    // If true, the name is forced to UPPERCASE before drawing
-    // (the sample certificate uses uppercase).
-    uppercase: true,
+    // Color presets offered in the UI. RGB each 0..1.
+    colors: {
+      black: { r: 0, g: 0, b: 0 },
+      white: { r: 1, g: 1, b: 1 },
+    },
+
+    // Default color depending on print mode.
+    // 'full'     -> printing on top of the colourful template (light text).
+    // 'nameOnly' -> printing on white paper (dark text).
+    defaultColorByMode: {
+      full: 'white',
+      nameOnly: 'black',
+    },
+
+    // Default letter-case style for the name.
+    // 'upper'      -> ВИСИТОВ ИЗРАИЛ АЛМИРЗАЕВИЧ
+    // 'capitalize' -> Виситов Израил Алмирзаевич
+    defaultCase: 'upper',
   },
 
   // ----- LINE-BREAK BEHAVIOUR -----
   // Default position to break the name: after word #N (1-based).
-  // 1 = break after the first word (surname on its own line),
-  //     which matches the sample certificate.
+  //   0 = no break (single line)
+  //   1 = break after the first word (surname on its own line,
+  //       which matches the sample certificate)
   defaultBreakAfterWord: 1,
 
   // ----- "ФИО ONLY" MODE -----

@@ -1,6 +1,6 @@
 import { useMemo } from 'react';
 import { config } from '../config.js';
-import { splitName } from '../utils/certificateGenerator.js';
+import { splitName, transformCase } from '../utils/certificateGenerator.js';
 
 function BreakSelector({ fio, value, onChange }) {
   const words = useMemo(
@@ -12,16 +12,17 @@ function BreakSelector({ fio, value, onChange }) {
     return <span className="muted">—</span>;
   }
 
-  const options = [];
-  for (let i = 1; i < words.length; i++) options.push(i);
+  // Normalize stored value: if it points past the last word, treat as no-break.
+  const normalized = value > 0 && value < words.length ? value : 0;
 
   return (
     <select
       className="break-select"
-      value={Math.min(value, words.length - 1)}
+      value={normalized}
       onChange={(e) => onChange(Number(e.target.value))}
     >
-      {options.map((n) => (
+      <option value={0}>no break ({words.join(' ')})</option>
+      {Array.from({ length: words.length - 1 }, (_, i) => i + 1).map((n) => (
         <option key={n} value={n}>
           after word {n} ({words.slice(0, n).join(' ')} |{' '}
           {words.slice(n).join(' ')})
@@ -33,6 +34,7 @@ function BreakSelector({ fio, value, onChange }) {
 
 export default function ParticipantTable({
   participants,
+  caseStyle,
   onChange,
   onPrintRow,
 }) {
@@ -55,7 +57,7 @@ export default function ParticipantTable({
     ]);
   }
 
-  function handleKeyDown(e, id) {
+  function handleKeyDown(e) {
     if (e.key === 'Enter') {
       e.preventDefault();
       addRow();
@@ -86,7 +88,7 @@ export default function ParticipantTable({
                     value={p.fio}
                     placeholder="Виситов Израил Алмирзаевич"
                     onChange={(e) => updateRow(p.id, { fio: e.target.value })}
-                    onKeyDown={(e) => handleKeyDown(e, p.id)}
+                    onKeyDown={handleKeyDown}
                     autoFocus={idx === participants.length - 1 && !p.fio}
                   />
                 </td>
@@ -94,9 +96,7 @@ export default function ParticipantTable({
                   {p.fio.trim() ? (
                     <div className="preview-block">
                       {lines.map((l, i) => (
-                        <div key={i}>
-                          {config.text.uppercase ? l.toUpperCase() : l}
-                        </div>
+                        <div key={i}>{transformCase(l, caseStyle)}</div>
                       ))}
                     </div>
                   ) : (

@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { config } from '../config.js';
 import { splitName, transformCase } from '../utils/certificateGenerator.js';
+import { uuid } from '../utils/uuid.js';
 
 function BreakSelector({ fio, value, onChange }) {
   const words = useMemo(
@@ -50,7 +51,7 @@ export default function ParticipantTable({
     onChange([
       ...participants,
       {
-        id: crypto.randomUUID(),
+        id: uuid(),
         fio: '',
         breakAfterWord: config.defaultBreakAfterWord,
       },

@@ -6,6 +6,7 @@ import {
   printPdfBlob,
 } from './utils/certificateGenerator.js';
 import { config } from './config.js';
+import { uuid } from './utils/uuid.js';
 import './App.css';
 
 const STORAGE_KEY = 'cert-gen.participants.v1';
@@ -19,7 +20,7 @@ function loadInitial() {
   }
   return [
     {
-      id: crypto.randomUUID(),
+      id: uuid(),
       fio: '',
       breakAfterWord: config.defaultBreakAfterWord,
     },
@@ -95,7 +96,7 @@ export default function App() {
     if (!confirm('Remove all participants?')) return;
     persist([
       {
-        id: crypto.randomUUID(),
+        id: uuid(),
         fio: '',
         breakAfterWord: config.defaultBreakAfterWord,
       },

@@ -29,7 +29,7 @@ function loadInitial() {
 export default function App() {
   const [participants, setParticipants] = useState(loadInitial);
   const [mode, setMode] = useState('full'); // 'full' | 'nameOnly'
-  const [color, setColor] = useState(config.text.defaultColorByMode.full); // 'white' | 'black'
+  const [color, setColor] = useState(config.text.defaultColorByMode.full); // 'white' | 'dark'
   const [caseStyle, setCaseStyle] = useState(config.text.defaultCase); // 'upper' | 'capitalize'
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
@@ -154,10 +154,10 @@ export default function App() {
             </button>
             <button
               type="button"
-              className={`seg-btn ${color === 'black' ? 'active' : ''}`}
-              onClick={() => setColor('black')}
+              className={`seg-btn ${color === 'dark' ? 'active' : ''}`}
+              onClick={() => setColor('dark')}
             >
-              <span className="swatch swatch-black" /> Чёрный
+              <span className="swatch swatch-dark" /> Тёмный
             </button>
           </div>
         </fieldset>

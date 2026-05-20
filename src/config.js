@@ -41,8 +41,8 @@ export const config = {
 
     // Color presets offered in the UI. RGB each 0..1.
     colors: {
-      // Dark navy-blue (#0d4b74) — labelled "Чёрный" in the UI.
-      black: { r: 13 / 255, g: 75 / 255, b: 116 / 255 },
+      // Dark navy-blue (#0d4b74) — labelled "Тёмный" in the UI.
+      dark: { r: 13 / 255, g: 75 / 255, b: 116 / 255 },
       white: { r: 1, g: 1, b: 1 },
     },
 
@@ -51,7 +51,7 @@ export const config = {
     // 'nameOnly' -> printing on white paper (dark text).
     defaultColorByMode: {
       full: 'white',
-      nameOnly: 'black',
+      nameOnly: 'dark',
     },
 
     // Default letter-case style for the name.

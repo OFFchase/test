@@ -91,7 +91,7 @@ function drawNameLines(page, lines, font, { color, caseStyle }) {
  * Generate a PDF for a single participant.
  *  - mode = 'full'     -> load template.pdf and overlay the name
  *  - mode = 'nameOnly' -> blank page with just the name
- *  - color             -> 'black' | 'white'
+ *  - color             -> 'dark' | 'white'
  *  - caseStyle         -> 'upper' | 'capitalize'
  * Returns a Blob (application/pdf).
  */

@@ -10,7 +10,7 @@ export const config = {
   // ----- PDF TEMPLATE -----
   // Drop your certificate PDF here:  public/template.pdf
   // (the path below is relative to the served site root)
-  pdfTemplatePath: '/template.pdf',
+  pdfTemplatePath: '/template-empty.pdf',
 
   // ----- FONT -----
   // A Cyrillic-capable TTF is required so Russian names render correctly.

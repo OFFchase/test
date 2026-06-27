@@ -1,219 +1,148 @@
-import { useState } from 'react';
-import ParticipantTable from './components/ParticipantTable.jsx';
-import {
-  generateCertificate,
-  generateBatchCertificate,
-  printPdfBlob,
-} from './utils/certificateGenerator.js';
-import { config } from './config.js';
-import { uuid } from './utils/uuid.js';
-import './App.css';
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { intro, flags, outro } from './slides'
+import './App.css'
 
-const STORAGE_KEY = 'cert-gen.participants.v1';
-
-function loadInitial() {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) return JSON.parse(raw);
-  } catch {
-    /* ignore */
-  }
-  return [
-    {
-      id: uuid(),
-      fio: '',
-      breakAfterWord: config.defaultBreakAfterWord,
-    },
-  ];
-}
+// Build the flat list of slides: intro, every green flag, then the outro.
+const SLIDES = [intro, ...flags.map((f, i) => ({ type: 'flag', index: i, ...f })), outro]
+const LAST = SLIDES.length - 1
 
 export default function App() {
-  const [participants, setParticipants] = useState(loadInitial);
-  const [mode, setMode] = useState('full'); // 'full' | 'nameOnly'
-  const [color, setColor] = useState(config.text.defaultColorByMode.full); // 'white' | 'dark'
-  const [caseStyle, setCaseStyle] = useState(config.text.defaultCase); // 'upper' | 'capitalize'
-  const [busy, setBusy] = useState(false);
-  const [error, setError] = useState('');
+  const [current, setCurrent] = useState(0)
+  const [dir, setDir] = useState('next') // controls enter/exit animation direction
+  const [hearts, setHearts] = useState([])
+  const touchStart = useRef(null)
+  const locked = useRef(false) // debounce rapid swipes/keys mid-transition
 
-  function persist(next) {
-    setParticipants(next);
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
-    } catch {
-      /* ignore */
+  const go = useCallback((to, direction) => {
+    if (to < 0 || to > LAST || locked.current) return
+    locked.current = true
+    setDir(direction)
+    setCurrent(to)
+    setTimeout(() => { locked.current = false }, 480)
+  }, [])
+
+  const next = useCallback(() => go(current + 1, 'next'), [current, go])
+  const prev = useCallback(() => go(current - 1, 'prev'), [current, go])
+
+  // Keyboard nav (handy on desktop while testing, harmless on mobile)
+  useEffect(() => {
+    const onKey = (e) => {
+      if (['ArrowDown', 'ArrowRight', ' ', 'Enter'].includes(e.key)) { e.preventDefault(); next() }
+      if (['ArrowUp', 'ArrowLeft'].includes(e.key)) { e.preventDefault(); prev() }
     }
-  }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [next, prev])
 
-  function changeMode(nextMode) {
-    setMode(nextMode);
-    // Reset color to the mode-appropriate default. User can still override after.
-    setColor(config.text.defaultColorByMode[nextMode]);
-  }
-
-  async function handlePrintRow(p) {
-    setError('');
-    setBusy(true);
-    try {
-      const blob = await generateCertificate({
-        fio: p.fio,
-        breakAfterWord: p.breakAfterWord,
-        mode,
-        color,
-        caseStyle,
-      });
-      printPdfBlob(blob);
-    } catch (e) {
-      setError(e.message || String(e));
-    } finally {
-      setBusy(false);
+  // Touch swipe (vertical-first, like stories; also accepts horizontal)
+  const onTouchStart = (e) => { touchStart.current = e.touches[0] }
+  const onTouchEnd = (e) => {
+    if (!touchStart.current) return
+    const t = e.changedTouches[0]
+    const dy = t.clientY - touchStart.current.clientY
+    const dx = t.clientX - touchStart.current.clientX
+    const THRESH = 45
+    if (Math.abs(dy) > Math.abs(dx)) {
+      if (dy < -THRESH) next()
+      else if (dy > THRESH) prev()
+    } else {
+      if (dx < -THRESH) next()
+      else if (dx > THRESH) prev()
     }
+    touchStart.current = null
   }
 
-  async function handlePrintAll() {
-    setError('');
-    setBusy(true);
-    try {
-      const valid = participants.filter((p) => p.fio.trim());
-      if (valid.length === 0) {
-        setError('Add at least one participant with a name.');
-        return;
-      }
-      const blob = await generateBatchCertificate({
-        participants: valid,
-        mode,
-        color,
-        caseStyle,
-      });
-      printPdfBlob(blob);
-    } catch (e) {
-      setError(e.message || String(e));
-    } finally {
-      setBusy(false);
-    }
+  // Tapping the right 65% advances, left 35% goes back (story-style)
+  const onTap = (e) => {
+    const x = e.clientX / window.innerWidth
+    if (x < 0.35) prev()
+    else next()
   }
 
-  function clearAll() {
-    if (!confirm('Remove all participants?')) return;
-    persist([
-      {
-        id: uuid(),
-        fio: '',
-        breakAfterWord: config.defaultBreakAfterWord,
-      },
-    ]);
+  // Confetti hearts when the final CTA is pressed
+  const burstHearts = (e) => {
+    e.stopPropagation()
+    const batch = Array.from({ length: 18 }, (_, i) => ({
+      id: Date.now() + i,
+      left: Math.random() * 100,
+      delay: Math.random() * 0.4,
+      dur: 1.6 + Math.random() * 1.4,
+      scale: 0.7 + Math.random() * 1.1,
+      char: ['💚', '💖', '✨', '🌿', '💘'][i % 5],
+    }))
+    setHearts((h) => [...h, ...batch])
+    setTimeout(() => setHearts((h) => h.slice(batch.length)), 3200)
   }
+
+  const slide = SLIDES[current]
 
   return (
-    <div className="app">
-      <header className="app-header">
-        <h1>Генератор сертификатов</h1>
-        <p className="subtitle">
-          Введите ФИО участников и распечатайте сертификаты.
-        </p>
-      </header>
+    <div
+      className={`stage theme-${slide.theme}`}
+      onClick={onTap}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+    >
+      {/* progress pips */}
+      <div className="progress" onClick={(e) => e.stopPropagation()}>
+        {SLIDES.map((_, i) => (
+          <span key={i} className={`pip ${i === current ? 'on' : ''} ${i < current ? 'done' : ''}`} />
+        ))}
+      </div>
 
-      <section className="controls">
-        <fieldset className="opt-group mode-toggle">
-          <legend>Режим печати</legend>
-          <label>
-            <input
-              type="radio"
-              name="mode"
-              value="full"
-              checked={mode === 'full'}
-              onChange={() => changeMode('full')}
-            />
-            <span>
-              <strong>Полный шаблон</strong>
-              <em>PDF целиком + ФИО</em>
-            </span>
-          </label>
-          <label>
-            <input
-              type="radio"
-              name="mode"
-              value="nameOnly"
-              checked={mode === 'nameOnly'}
-              onChange={() => changeMode('nameOnly')}
-            />
-            <span>
-              <strong>Только ФИО</strong>
-              <em>Только имя, без шаблона (для готовых распечаток)</em>
-            </span>
-          </label>
-        </fieldset>
-
-        <fieldset className="opt-group">
-          <legend>Цвет текста</legend>
-          <div className="seg">
-            <button
-              type="button"
-              className={`seg-btn ${color === 'white' ? 'active' : ''}`}
-              onClick={() => setColor('white')}
-            >
-              <span className="swatch swatch-white" /> Белый
-            </button>
-            <button
-              type="button"
-              className={`seg-btn ${color === 'dark' ? 'active' : ''}`}
-              onClick={() => setColor('dark')}
-            >
-              <span className="swatch swatch-dark" /> Тёмный
-            </button>
+      <div key={current} className={`slide enter-${dir}`}>
+        {slide.type === 'intro' && (
+          <div className="card intro">
+            <p className="kicker">{slide.kicker}</p>
+            <h1 className="bigtitle">{slide.title}</h1>
+            <p className="subtitle">{slide.subtitle}</p>
+            <p className="hint pulse">{slide.hint}</p>
           </div>
-        </fieldset>
+        )}
 
-        <fieldset className="opt-group">
-          <legend>Регистр</legend>
-          <div className="seg">
-            <button
-              type="button"
-              className={`seg-btn ${caseStyle === 'upper' ? 'active' : ''}`}
-              onClick={() => setCaseStyle('upper')}
-              title="ВИСИТОВ ИЗРАИЛ"
-            >
-              ВСЕ ЗАГЛАВНЫЕ
-            </button>
-            <button
-              type="button"
-              className={`seg-btn ${caseStyle === 'capitalize' ? 'active' : ''}`}
-              onClick={() => setCaseStyle('capitalize')}
-              title="Виситов Израил"
-            >
-              С Заглавной
-            </button>
+        {slide.type === 'flag' && (
+          <div className="card flag">
+            <span className="badge">green flag #{slide.index + 1}</span>
+            <div className="emoji float">{slide.emoji}</div>
+            <h2 className="flagtitle">{slide.flag}</h2>
+            <p className="detail">{slide.detail}</p>
           </div>
-        </fieldset>
+        )}
 
-        <div className="bulk-actions">
-          <button
-            className="btn primary"
-            onClick={handlePrintAll}
-            disabled={busy}
+        {slide.type === 'outro' && (
+          <div className="card outro">
+            <div className="emoji beat">{slide.emoji}</div>
+            <h1 className="bigtitle">{slide.title}</h1>
+            <p className="subtitle">{slide.subtitle}</p>
+            <button className="cta" onClick={burstHearts}>{slide.cta}</button>
+          </div>
+        )}
+      </div>
+
+      {/* floating hearts layer */}
+      <div className="hearts" aria-hidden>
+        {hearts.map((h) => (
+          <span
+            key={h.id}
+            className="heart"
+            style={{
+              left: `${h.left}%`,
+              animationDelay: `${h.delay}s`,
+              animationDuration: `${h.dur}s`,
+              fontSize: `${h.scale * 2}rem`,
+            }}
           >
-            {busy ? 'Печать…' : 'Печать всех'}
-          </button>
-          <button className="btn ghost" onClick={clearAll} disabled={busy}>
-            Очистить
-          </button>
-        </div>
-      </section>
+            {h.char}
+          </span>
+        ))}
+      </div>
 
-      {error && <div className="error">{error}</div>}
-
-      <ParticipantTable
-        participants={participants}
-        caseStyle={caseStyle}
-        onChange={persist}
-        onPrintRow={handlePrintRow}
-      />
-
-      <footer className="app-footer">
-        <p>
-          Настройки позиции текста и шрифта — <code>src/config.js</code>.
-          Файл шаблона — <code>public/template.pdf</code>.
-        </p>
-      </footer>
+      {/* footer nav arrows for the un-swipey */}
+      <div className="nav" onClick={(e) => e.stopPropagation()}>
+        <button className="navbtn" onClick={prev} disabled={current === 0} aria-label="previous">↑</button>
+        <span className="counter">{current + 1} / {SLIDES.length}</span>
+        <button className="navbtn" onClick={next} disabled={current === LAST} aria-label="next">↓</button>
+      </div>
     </div>
-  );
+  )
 }

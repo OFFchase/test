@@ -1,16 +1,31 @@
-# React + Vite
+# 💚 green flags
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A tiny, mobile-first presentation website with cool transitions — a swipeable
+deck of "green flags" making the (very serious) case for why someone should date me.
 
-Currently, two official plugins are available:
+Built with React + Vite. No animation libraries — every transition is hand-rolled CSS.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Run it
 
-## React Compiler
+```bash
+npm install
+npm run dev
+```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Then open it **on your phone** (or your browser's mobile/device view — it's designed
+for portrait phone screens). Vite runs with `--host`, so it prints a network URL you
+can open from a phone on the same Wi-Fi.
 
-## Expanding the ESLint configuration
+## How to use it
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- **Swipe up / down** to move between slides (left / right also works)
+- **Tap** the right side to advance, the left side to go back
+- Arrow keys / space work too (handy on desktop)
+- Hit the button on the last slide for a little surprise 🎉
+
+## Make it yours
+
+All the content lives in [`src/slides.js`](src/slides.js): edit the `intro`,
+the `flags` array (each entry is one slide — emoji, headline, detail, and a
+color `theme`), and the `outro`. Available themes: `aurora`, `mint`, `sky`,
+`peach`, `lilac`, `sunset`.

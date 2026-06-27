@@ -1,71 +1,71 @@
-// The green flags. Edit these freely — each one becomes a swipeable slide.
-// `theme` picks the gradient/animation flavor defined in App.css.
+// Зелёные флаги. Меняй текст свободно — каждый объект становится слайдом.
+// `theme` выбирает градиент/анимацию из App.css.
 
 export const intro = {
   type: 'intro',
-  kicker: 'a tiny presentation',
-  title: 'green flags',
-  subtitle: 'reasons you should (allegedly) date me',
-  hint: 'swipe up to begin →',
+  kicker: 'маленькая презентация',
+  title: 'зелёные флаги',
+  subtitle: 'почему тебе (вроде как) стоит со мной встречаться',
+  hint: 'свайпни вверх, чтобы начать →',
   theme: 'aurora',
 }
 
 export const flags = [
   {
     emoji: '🧦',
-    flag: 'I pair my own socks',
-    detail: "Both of them. Matching. Every time. This is basic but you'd be surprised.",
+    flag: 'я сам себе подбираю носки в пару',
+    detail: 'Оба. В тон. Каждый раз. Базово, но ты удивишься, как это редко встречается.',
     theme: 'mint',
   },
   {
     emoji: '📱',
-    flag: 'I text back',
-    detail: "Like a functioning adult. No three-day silences, no 'haha' to a paragraph.",
+    flag: 'я отвечаю на сообщения',
+    detail: 'Как нормальный взрослый человек. Без трёхдневного молчания и «хах» в ответ на абзац.',
     theme: 'sky',
   },
   {
     emoji: '☕',
-    flag: 'I remember your coffee order',
-    detail: "And your weird snack opinions, and that one story you swear you never told me.",
+    flag: 'я помню твой заказ в кофейне',
+    detail: 'И твои странные мнения о снеках, и ту историю, которую ты «точно мне не рассказывала».',
     theme: 'peach',
   },
   {
     emoji: '🧹',
-    flag: 'I do the dishes before they multiply',
-    detail: "No sink monsters in this household. Domestic competence is a love language.",
+    flag: 'я мою посуду до того, как она размножится',
+    detail: 'Никаких монстров в раковине. Бытовая адекватность — это тоже язык любви.',
     theme: 'lilac',
   },
   {
     emoji: '😂',
-    flag: 'I laugh at your jokes',
-    detail: "Even the bad ones. Especially the bad ones. The bad ones are my favorite.",
+    flag: 'я смеюсь над твоими шутками',
+    detail: 'Даже над плохими. Особенно над плохими. Плохие — мои любимые.',
     theme: 'sunset',
   },
   {
     emoji: '🧠',
-    flag: 'I actually listen',
-    detail: "Phone down, eyes up. I'll quote you back to yourself months later. Spooky, romantic.",
+    flag: 'я действительно слушаю',
+    detail: 'Телефон вниз, глаза вверх. Процитирую тебя тебе же спустя месяцы. Жутко, но романтично.',
     theme: 'mint',
   },
   {
     emoji: '🌱',
-    flag: 'I keep plants alive',
-    detail: "If I can keep a fern thriving, imagine the emotional consistency on offer here.",
+    flag: 'у меня растения не умирают',
+    detail: 'Если я могу сохранить папоротник живым — представь уровень эмоциональной стабильности.',
     theme: 'sky',
   },
   {
     emoji: '🍳',
-    flag: 'I will cook for you',
-    detail: "Real food. Possibly breakfast in bed. Definitely snacks at 11pm with no judgment.",
+    flag: 'я буду готовить для тебя',
+    detail: 'Настоящую еду. Возможно, завтрак в постель. Точно снеки в 11 вечера без осуждения.',
     theme: 'peach',
   },
 ]
 
 export const outro = {
   type: 'outro',
-  emoji: '💚',
-  title: "so... wanna?",
-  subtitle: "that's the whole pitch.",
-  cta: 'yes, obviously',
+  emoji: '☕',
+  title: 'пойдёшь со мной\nна кофе сегодня вечером?',
+  subtitle: 'это была вся презентация.',
+  cta: 'да, конечно 💚',
   theme: 'aurora',
 }

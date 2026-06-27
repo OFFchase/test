@@ -94,6 +94,7 @@
   margin: 0 0 12px;
   font-weight: 900;
   letter-spacing: -0.02em;
+  white-space: pre-line;
   background: linear-gradient(120deg, #064e3b, #065f46, #0d2a1f);
   -webkit-background-clip: text;
   background-clip: text;
@@ -133,6 +134,8 @@
 }
 
 .detail { font-size: 1.02rem; line-height: 1.5; opacity: 0.82; margin: 0; }
+
+.card.outro .bigtitle { font-size: clamp(1.8rem, 8vw, 2.6rem); }
 
 /* ---------- final CTA ---------- */
 .cta {

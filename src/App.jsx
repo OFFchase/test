@@ -102,7 +102,7 @@ export default function App() {
 
         {slide.type === 'flag' && (
           <div className="card flag">
-            <span className="badge">green flag #{slide.index + 1}</span>
+            <span className="badge">зелёный флаг #{slide.index + 1}</span>
             <div className="emoji float">{slide.emoji}</div>
             <h2 className="flagtitle">{slide.flag}</h2>
             <p className="detail">{slide.detail}</p>

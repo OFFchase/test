@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260" role="img" aria-label="Кот-страж с щитом и мечом защищает от убегающей крысы">
+  <defs>
+    <linearGradient id="steel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e7edf3"/>
+      <stop offset="1" stop-color="#9fb0c2"/>
+    </linearGradient>
+    <linearGradient id="shield" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#34d399"/>
+      <stop offset="1" stop-color="#059669"/>
+    </linearGradient>
+    <linearGradient id="fur" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f7b267"/>
+      <stop offset="1" stop-color="#f4994a"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ground shadow -->
+  <ellipse cx="120" cy="236" rx="86" ry="13" fill="#053b2a" opacity="0.10"/>
+
+  <!-- ===== fleeing rat (bottom-right), terrified ===== -->
+  <g transform="translate(206 206)">
+    <path d="M28 -10 h18 M30 -1 h24 M28 8 h16" stroke="#cbd5e1" stroke-width="3" stroke-linecap="round"/>
+    <path d="M20 4 q16 0 24 10" stroke="#9aa5b1" stroke-width="3.5" fill="none" stroke-linecap="round"/>
+    <ellipse cx="2" cy="4" rx="19" ry="12" fill="#9aa5b1"/>
+    <circle cx="-14" cy="0" r="9.5" fill="#9aa5b1"/>
+    <circle cx="-19" cy="-7" r="4.5" fill="#c7d0db"/>
+    <circle cx="-10" cy="-8" r="4.5" fill="#c7d0db"/>
+    <circle cx="-17" cy="1" r="2" fill="#2b3138"/>
+    <circle cx="-23" cy="3" r="1.6" fill="#f9a8d4"/>
+    <!-- panic sweat -->
+    <path d="M-26 -14 q-3.5 6 0 8.5 q3.5 -2.5 0 -8.5z" fill="#7dd3fc"/>
+  </g>
+
+  <!-- ===== TAIL ===== -->
+  <path d="M176 196 q44 -2 30 -46 q-6 -18 -22 -10 q10 6 6 22 q-4 18 -22 18z" fill="url(#fur)" stroke="#e07b39" stroke-width="2"/>
+
+  <!-- ===== BODY ===== -->
+  <path d="M70 214 q-6 -66 50 -66 q56 0 50 66z" fill="url(#fur)" stroke="#e07b39" stroke-width="2"/>
+  <path d="M96 214 q-4 -42 24 -42 q28 0 24 42z" fill="#ffe9cf"/>
+
+  <!-- back paw + front paws -->
+  <ellipse cx="86" cy="210" rx="15" ry="11" fill="url(#fur)" stroke="#e07b39" stroke-width="2"/>
+  <ellipse cx="154" cy="210" rx="15" ry="11" fill="url(#fur)" stroke="#e07b39" stroke-width="2"/>
+
+  <!-- ===== SWORD (held in left paw) ===== -->
+  <g transform="rotate(18 78 150)">
+    <rect x="73" y="60" width="9" height="92" rx="4" fill="url(#steel)" stroke="#7e8ba0" stroke-width="1.5"/>
+    <path d="M77.5 56 l5 8 h-10z" fill="#e7edf3" stroke="#7e8ba0" stroke-width="1.5"/>
+    <rect x="62" y="150" width="31" height="8" rx="4" fill="#b8860b"/>
+    <rect x="73.5" y="156" width="8" height="20" rx="4" fill="#8a5a12"/>
+    <circle cx="77.5" cy="178" r="6" fill="#f4c430" stroke="#b8860b" stroke-width="1.5"/>
+  </g>
+
+  <!-- ===== SHIELD (front, in right paw) ===== -->
+  <g transform="translate(150 152)">
+    <path d="M0 -34 q34 6 34 6 v18 q0 34 -34 50 q-34 -16 -34 -50 v-18 q0 0 34 -6z" fill="url(#shield)" stroke="#047857" stroke-width="3"/>
+    <path d="M0 -22 q22 4 22 4 v12 q0 22 -22 33 q-22 -11 -22 -33 v-12 q0 0 22 -4z" fill="none" stroke="#a7f3d0" stroke-width="2.5" opacity="0.8"/>
+    <!-- heart emblem -->
+    <path d="M0 16 c-12 -10 -18 -18 -10 -25 c5 -4 10 -1 10 4 c0 -5 5 -8 10 -4 c8 7 2 15 -10 25z" fill="#ffffff"/>
+  </g>
+
+  <!-- ===== HEAD ===== -->
+  <!-- ears -->
+  <path d="M84 92 l-8 -34 l30 16z" fill="url(#fur)" stroke="#e07b39" stroke-width="2"/>
+  <path d="M156 92 l8 -34 l-30 16z" fill="url(#fur)" stroke="#e07b39" stroke-width="2"/>
+  <path d="M86 84 l-3 -16 l13 8z" fill="#f9a8d4"/>
+  <path d="M154 84 l3 -16 l-13 8z" fill="#f9a8d4"/>
+
+  <!-- head shape -->
+  <ellipse cx="120" cy="104" rx="52" ry="46" fill="url(#fur)" stroke="#e07b39" stroke-width="2"/>
+
+  <!-- tabby stripes -->
+  <path d="M120 60 v16 M104 62 l4 14 M136 62 l-4 14" stroke="#e07b39" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+
+  <!-- cheeks -->
+  <ellipse cx="120" cy="124" rx="34" ry="22" fill="#ffe9cf"/>
+
+  <!-- ===== HELMET ===== -->
+  <!-- plume -->
+  <path d="M120 24 q22 -10 14 18 q-2 8 -14 6 q-12 2 -14 -6 q-8 -28 14 -18z" fill="#ef4444"/>
+  <path d="M120 26 q12 -4 8 12 q-8 4 -16 0 q-4 -16 8 -12z" fill="#f87171" opacity="0.7"/>
+  <!-- dome -->
+  <path d="M74 80 q46 -52 92 0 q-46 -18 -92 0z" fill="url(#steel)" stroke="#7e8ba0" stroke-width="2.5"/>
+  <rect x="74" y="76" width="92" height="12" rx="6" fill="url(#steel)" stroke="#7e8ba0" stroke-width="2.5"/>
+  <!-- nose guard -->
+  <rect x="114" y="86" width="12" height="34" rx="6" fill="url(#steel)" stroke="#7e8ba0" stroke-width="2"/>
+  <circle cx="86" cy="82" r="3.5" fill="#9fb0c2"/>
+  <circle cx="154" cy="82" r="3.5" fill="#9fb0c2"/>
+
+  <!-- ===== FACE (determined) ===== -->
+  <!-- angry eyebrows -->
+  <path d="M92 98 l18 6" stroke="#7a4a1e" stroke-width="4" stroke-linecap="round"/>
+  <path d="M148 98 l-18 6" stroke="#7a4a1e" stroke-width="4" stroke-linecap="round"/>
+  <!-- eyes -->
+  <ellipse cx="103" cy="110" rx="8" ry="9" fill="#2b2b2b"/>
+  <ellipse cx="137" cy="110" rx="8" ry="9" fill="#2b2b2b"/>
+  <circle cx="105.5" cy="107" r="2.6" fill="#fff"/>
+  <circle cx="139.5" cy="107" r="2.6" fill="#fff"/>
+  <!-- nose -->
+  <path d="M114 122 h12 l-6 6z" fill="#f9748f"/>
+  <!-- mouth (tiny determined frown -> :3) -->
+  <path d="M120 128 v4 M120 132 q-8 6 -14 1 M120 132 q8 6 14 1" stroke="#7a4a1e" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <!-- whiskers -->
+  <path d="M86 120 l-22 -4 M88 128 l-22 4 M154 120 l22 -4 M152 128 l22 4" stroke="#caa06a" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- little "!" guard alert -->
+  <g transform="translate(56 72)">
+    <circle cx="0" cy="0" r="13" fill="#fde047" stroke="#eab308" stroke-width="2"/>
+    <rect x="-2.5" y="-7" width="5" height="9" rx="2.5" fill="#854d0e"/>
+    <circle cx="0" cy="6" r="2.6" fill="#854d0e"/>
+  </g>
+</svg>

@@ -1,25 +1,38 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { intro, flags, outro } from './slides'
+import { NOTIFY } from './config'
 import './App.css'
 
 // Build the flat list of slides: intro, every green flag, then the outro.
 const SLIDES = [intro, ...flags.map((f, i) => ({ type: 'flag', index: i, ...f })), outro]
 const LAST = SLIDES.length - 1
 
+// Teasing lines that cycle as she keeps pressing "мне надо подумать".
+const TEASES = [
+  'мне надо подумать',
+  'точно подумать? 👀',
+  'кнопка как будто не работает 😇',
+  'давай ещё разок 🥺',
+  'ну пожалуйста ☕',
+]
+
 export default function App() {
   const [current, setCurrent] = useState(0)
   const [dir, setDir] = useState('next') // controls enter/exit animation direction
   const [hearts, setHearts] = useState([])
+  const [saidYes, setSaidYes] = useState(false)
+  const [declines, setDeclines] = useState(0)
   const touchStart = useRef(null)
   const locked = useRef(false) // debounce rapid swipes/keys mid-transition
+  const notified = useRef(false) // make sure we only ping once
 
   const go = useCallback((to, direction) => {
-    if (to < 0 || to > LAST || locked.current) return
+    if (to < 0 || to > LAST || locked.current || saidYes) return
     locked.current = true
     setDir(direction)
     setCurrent(to)
     setTimeout(() => { locked.current = false }, 480)
-  }, [])
+  }, [saidYes])
 
   const next = useCallback(() => go(current + 1, 'next'), [current, go])
   const prev = useCallback(() => go(current - 1, 'prev'), [current, go])
@@ -52,26 +65,55 @@ export default function App() {
     touchStart.current = null
   }
 
-  // Tapping the right 65% advances, left 35% goes back (story-style)
+  // Tapping the right 65% advances, left 35% goes back (story-style).
+  // Disabled on the final slide so the buttons get the taps.
   const onTap = (e) => {
+    if (current === LAST) return
     const x = e.clientX / window.innerWidth
     if (x < 0.35) prev()
     else next()
   }
 
-  // Confetti hearts when the final CTA is pressed
-  const burstHearts = (e) => {
-    e.stopPropagation()
-    const batch = Array.from({ length: 18 }, (_, i) => ({
-      id: Date.now() + i,
-      left: Math.random() * 100,
-      delay: Math.random() * 0.4,
-      dur: 1.6 + Math.random() * 1.4,
-      scale: 0.7 + Math.random() * 1.1,
+  // Heart/confetti burst.
+  const burstHearts = (count = 18) => {
+    const seed = hearts.length
+    const batch = Array.from({ length: count }, (_, i) => ({
+      id: `${seed}-${i}-${current}`,
+      left: ((i * 37) % 100),
+      delay: (i % 6) * 0.12,
+      dur: 1.6 + ((i * 13) % 14) / 10,
+      scale: 0.7 + ((i * 7) % 11) / 10,
       char: ['💚', '💖', '✨', '🌿', '💘'][i % 5],
     }))
     setHearts((h) => [...h, ...batch])
-    setTimeout(() => setHearts((h) => h.slice(batch.length)), 3200)
+    setTimeout(() => setHearts((h) => h.slice(batch.length)), 3400)
+  }
+
+  // Fire the ntfy.sh push exactly once.
+  const notify = () => {
+    if (notified.current) return
+    notified.current = true
+    try {
+      fetch(`https://ntfy.sh/${NOTIFY.ntfyTopic}`, {
+        method: 'POST',
+        body: NOTIFY.message,
+        headers: { Title: NOTIFY.title, Priority: 'high', Tags: 'green_heart,tada' },
+      }).catch(() => {})
+    } catch { /* offline / blocked — the on-screen celebration still happens */ }
+  }
+
+  const onYes = (e) => {
+    e.stopPropagation()
+    setSaidYes(true)
+    notify()
+    burstHearts(40)
+    setTimeout(() => burstHearts(30), 600)
+  }
+
+  // The playful "no" button: dodges, shrinks, and teases.
+  const onDecline = (e) => {
+    e.stopPropagation()
+    setDeclines((d) => d + 1)
   }
 
   const slide = SLIDES[current]
@@ -103,18 +145,47 @@ export default function App() {
         {slide.type === 'flag' && (
           <div className="card flag">
             <span className="badge">зелёный флаг #{slide.index + 1}</span>
-            <div className="emoji float">{slide.emoji}</div>
+            {slide.image
+              ? <img className="guard-img float" src={slide.image} alt="кот-страж" />
+              : <div className="emoji float">{slide.emoji}</div>}
             <h2 className="flagtitle">{slide.flag}</h2>
             <p className="detail">{slide.detail}</p>
           </div>
         )}
 
-        {slide.type === 'outro' && (
-          <div className="card outro">
+        {slide.type === 'outro' && !saidYes && (
+          <div className="card outro" onClick={(e) => e.stopPropagation()}>
             <div className="emoji beat">{slide.emoji}</div>
             <h1 className="bigtitle">{slide.title}</h1>
             <p className="subtitle">{slide.subtitle}</p>
-            <button className="cta" onClick={burstHearts}>{slide.cta}</button>
+            <div className="choices">
+              <button
+                className="cta"
+                style={{ transform: `scale(${1 + declines * 0.12})` }}
+                onClick={onYes}
+              >
+                {slide.cta}
+              </button>
+              <button
+                className="decline"
+                style={{
+                  transform: `scale(${Math.max(0.45, 1 - declines * 0.16)})`,
+                  opacity: Math.max(0.4, 1 - declines * 0.12),
+                  marginLeft: `${(declines % 2 ? 1 : -1) * Math.min(declines * 14, 42)}px`,
+                }}
+                onClick={onDecline}
+              >
+                {TEASES[Math.min(declines, TEASES.length - 1)]}
+              </button>
+            </div>
+          </div>
+        )}
+
+        {slide.type === 'outro' && saidYes && (
+          <div className="card outro" onClick={(e) => e.stopPropagation()}>
+            <div className="emoji beat">💚</div>
+            <h1 className="bigtitle">{slide.thanks}</h1>
+            <p className="subtitle">{slide.thanksSub}</p>
           </div>
         )}
       </div>
@@ -137,12 +208,14 @@ export default function App() {
         ))}
       </div>
 
-      {/* footer nav arrows for the un-swipey */}
-      <div className="nav" onClick={(e) => e.stopPropagation()}>
-        <button className="navbtn" onClick={prev} disabled={current === 0} aria-label="previous">↑</button>
-        <span className="counter">{current + 1} / {SLIDES.length}</span>
-        <button className="navbtn" onClick={next} disabled={current === LAST} aria-label="next">↓</button>
-      </div>
+      {/* bottom nav arrows (hidden on the final slide) */}
+      {!saidYes && current !== LAST && (
+        <div className="nav" onClick={(e) => e.stopPropagation()}>
+          <button className="navbtn" onClick={prev} disabled={current === 0} aria-label="previous">↑</button>
+          <span className="counter">{current + 1} / {SLIDES.length}</span>
+          <button className="navbtn" onClick={next} aria-label="next">↓</button>
+        </div>
+      )}
     </div>
   )
 }

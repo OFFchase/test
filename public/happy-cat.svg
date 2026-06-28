@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260" role="img" aria-label="Счастливый кот обнимает чашку кофе">
+  <defs>
+    <linearGradient id="hfur" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#f7b267"/>
+      <stop offset="1" stop-color="#f4994a"/>
+    </linearGradient>
+    <linearGradient id="cup" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e6efe9"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ground shadow -->
+  <ellipse cx="130" cy="236" rx="84" ry="13" fill="#053b2a" opacity="0.10"/>
+
+  <!-- floating hearts + sparkles -->
+  <g fill="#34d399">
+    <path d="M40 64 c-7 -6 -11 -11 -6 -16 c3 -3 7 -1 6 3 c-1 -4 4 -6 7 -3 c5 5 1 10 -7 16z"/>
+    <path d="M222 84 c-6 -5 -9 -9 -5 -13 c2 -2 6 -1 5 2 c-1 -3 4 -5 6 -2 c4 4 0 8 -6 13z" opacity="0.85"/>
+  </g>
+  <g fill="#fde047" stroke="#facc15" stroke-width="1.5">
+    <path d="M210 50 l3 7 7 3 -7 3 -3 7 -3 -7 -7 -3 7 -3z"/>
+    <path d="M34 110 l2.5 6 6 2.5 -6 2.5 -2.5 6 -2.5 -6 -6 -2.5 6 -2.5z"/>
+    <path d="M226 150 l2 5 5 2 -5 2 -2 5 -2 -5 -5 -2 5 -2z"/>
+  </g>
+
+  <!-- TAIL (happy, curled up) -->
+  <path d="M178 198 q46 4 40 -42 q-3 -22 -22 -14 q12 6 8 24 q-4 20 -26 16z" fill="url(#hfur)" stroke="#e07b39" stroke-width="2"/>
+
+  <!-- BODY -->
+  <path d="M72 214 q-6 -64 58 -64 q64 0 58 64z" fill="url(#hfur)" stroke="#e07b39" stroke-width="2"/>
+  <path d="M100 214 q-4 -40 30 -40 q34 0 30 40z" fill="#ffe9cf"/>
+
+  <!-- back paws -->
+  <ellipse cx="92" cy="210" rx="15" ry="11" fill="url(#hfur)" stroke="#e07b39" stroke-width="2"/>
+  <ellipse cx="168" cy="210" rx="15" ry="11" fill="url(#hfur)" stroke="#e07b39" stroke-width="2"/>
+
+  <!-- ===== COFFEE CUP (hugged to chest) ===== -->
+  <g>
+    <!-- steam + heart -->
+    <path d="M118 150 q-6 -8 0 -16 M130 148 q-6 -8 0 -16 M142 150 q-6 -8 0 -16"
+          stroke="#cdeede" stroke-width="3.5" fill="none" stroke-linecap="round" opacity="0.9"/>
+    <path d="M130 120 c-6 -5 -9 -9 -5 -13 c2 -2 6 -1 5 2 c-1 -3 4 -5 6 -2 c4 4 0 8 -6 13z" fill="#f9748f"/>
+    <!-- saucer -->
+    <ellipse cx="130" cy="206" rx="40" ry="9" fill="#dceee5" stroke="#b6d6c8" stroke-width="2"/>
+    <!-- cup body -->
+    <path d="M102 168 h56 l-5 30 q-2 10 -23 10 q-21 0 -23 -10z" fill="url(#cup)" stroke="#b6d6c8" stroke-width="2.5"/>
+    <rect x="100" y="162" width="60" height="10" rx="5" fill="#fff" stroke="#b6d6c8" stroke-width="2.5"/>
+    <!-- green band -->
+    <rect x="104" y="180" width="52" height="9" fill="#34d399" opacity="0.85"/>
+    <!-- handle -->
+    <path d="M158 176 q20 0 18 16 q-2 12 -16 11" fill="none" stroke="#b6d6c8" stroke-width="6"/>
+  </g>
+
+  <!-- front paws hugging the cup -->
+  <ellipse cx="98" cy="196" rx="14" ry="11" fill="url(#hfur)" stroke="#e07b39" stroke-width="2" transform="rotate(-18 98 196)"/>
+  <ellipse cx="162" cy="196" rx="14" ry="11" fill="url(#hfur)" stroke="#e07b39" stroke-width="2" transform="rotate(18 162 196)"/>
+
+  <!-- ===== HEAD ===== -->
+  <!-- ears -->
+  <path d="M92 96 l-8 -36 l32 18z" fill="url(#hfur)" stroke="#e07b39" stroke-width="2"/>
+  <path d="M168 96 l8 -36 l-32 18z" fill="url(#hfur)" stroke="#e07b39" stroke-width="2"/>
+  <path d="M94 88 l-3 -17 l14 9z" fill="#f9a8d4"/>
+  <path d="M166 88 l3 -17 l-14 9z" fill="#f9a8d4"/>
+
+  <!-- head shape -->
+  <ellipse cx="130" cy="106" rx="54" ry="48" fill="url(#hfur)" stroke="#e07b39" stroke-width="2"/>
+
+  <!-- tabby stripes -->
+  <path d="M130 60 v16 M112 63 l4 14 M148 63 l-4 14" stroke="#e07b39" stroke-width="3" stroke-linecap="round" opacity="0.6"/>
+
+  <!-- cheeks area -->
+  <ellipse cx="130" cy="124" rx="36" ry="24" fill="#ffe9cf"/>
+
+  <!-- blush -->
+  <ellipse cx="100" cy="120" rx="11" ry="7" fill="#fca5a5" opacity="0.75"/>
+  <ellipse cx="160" cy="120" rx="11" ry="7" fill="#fca5a5" opacity="0.75"/>
+
+  <!-- ===== HAPPY FACE (^^) ===== -->
+  <path d="M98 106 q9 -12 18 0" stroke="#3b2a16" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+  <path d="M144 106 q9 -12 18 0" stroke="#3b2a16" stroke-width="4.5" fill="none" stroke-linecap="round"/>
+  <!-- nose -->
+  <path d="M124 120 h12 l-6 6z" fill="#f9748f"/>
+  <!-- big happy smile -->
+  <path d="M130 126 v4 M130 130 q-12 12 -22 2 M130 130 q12 12 22 2" stroke="#3b2a16" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <!-- little tongue -->
+  <path d="M125 138 q5 8 10 0z" fill="#f9748f"/>
+  <!-- whiskers -->
+  <path d="M94 122 l-22 -5 M96 130 l-22 3 M166 122 l22 -5 M164 130 l22 3" stroke="#caa06a" stroke-width="2" stroke-linecap="round"/>
+</svg>

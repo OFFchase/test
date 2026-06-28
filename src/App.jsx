@@ -183,8 +183,7 @@ export default function App() {
 
         {slide.type === 'outro' && saidYes && (
           <div className="card outro" onClick={(e) => e.stopPropagation()}>
-            <div className="emoji beat">💚</div>
-            <h1 className="bigtitle">{slide.thanks}</h1>
+            <img className="guard-img float" src="/happy-cat.svg" alt="счастливый кот" />
             <p className="subtitle">{slide.thanksSub}</p>
           </div>
         )}
